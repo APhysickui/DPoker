@@ -1,0 +1,28 @@
+name: Deploy realtime Worker
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: worker-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Deploy Worker with exact Pages origin
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PAGES_ORIGIN: ${{ vars.PAGES_ORIGIN }}
+        run: |
+          test -n "$PAGES_ORIGIN"
+          npx wrangler deploy --var "ALLOWED_ORIGINS:$PAGES_ORIGIN"
