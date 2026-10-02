@@ -145,7 +145,11 @@ export class PokerRoom extends DurableObject<Env> {
       } catch(e) {try {ws.send(JSON.stringify({type:'error',id:requestId,message:e instanceof Error?e.message:'操作失败'})); if(!(ws.deserializeAttachment() as Attachment).player) ws.close(4003,'鉴权失败');}catch{}}
     });
   }
-  async webSocketClose(ws: WebSocket, code = 1000, reason = '') { ws.close(code, reason); await this.disconnect(ws); }
+  async webSocketClose(ws: WebSocket, code = 1000, reason = '') {
+    const validCode = code >= 1000 && code <= 4999 && ![1004, 1005, 1006, 1015].includes(code);
+    try {ws.close(validCode ? code : 1000, reason);} catch {}
+    await this.disconnect(ws);
+  }
   async webSocketError(ws: WebSocket) { try {ws.close(1011, '连接异常');} catch {} await this.disconnect(ws); }
   private async disconnect(ws: WebSocket) {
     await this.serial(async()=>{

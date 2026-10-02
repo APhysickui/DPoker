@@ -8,7 +8,7 @@ class Socket {
   serializeAttachment(value:Record<string,unknown>){this.attachment=structuredClone(value);}
   deserializeAttachment(){return structuredClone(this.attachment);}
   send(message:string){this.messages.push(JSON.parse(message));}
-  close(){this.closed=true;}
+  close(code?:number){if(code===1005)throw new Error("reserved close code");this.closed=true;}
   get state():View {return this.messages.filter(m=>m.type==='state').at(-1)?.state;}
 }
 class Context {
@@ -41,5 +41,6 @@ describe('Durable Object 服务层（内存存储与 socket 替身）',()=>{
    expect(sockets[0].state.stage).toBe('settled');expect(sockets[0].state.players.reduce((n,p)=>n+p.chips,0)).toBe(9000);expect(ctx.alarm).toBe(105000);
  });
  it('实例重建保留牌局与截止时间，已失去的连接标记离线',async()=>{const {ctx,room}=make();await ctx.initialized;const a=await create(room),sa=await auth(room,ctx,a);const b=await create(room,'乙','join'),sb=await auth(room,ctx,b);await command(room,sa,'ready');await command(room,sb,'ready');await command(room,sa,'start');const before=sa.state;ctx.sockets=[];const restarted=make(ctx).room;await ctx.initialized;const restored=await auth(restarted,ctx,a);expect(restored.state.hand).toBe(before.hand);expect(restored.state.deadline).toBe(before.deadline);expect(restored.state.players.find(p=>p.id===a.player)!.cards).toEqual(before.players.find(p=>p.id===a.player)!.cards);expect(restored.state.players.find(p=>p.id===b.player)!.connected).toBe(false);vi.mocked(Date.now).mockReturnValue(130000);await restarted.alarm();expect(restored.state.stage).toBe('settled');});
+ it('无状态码关闭握手仍将玩家标记离线',async()=>{const {ctx,room}=make();await ctx.initialized;const a=await create(room),sa=await auth(room,ctx,a);await room.webSocketClose(sa as unknown as WebSocket,1005);expect(sa.closed).toBe(true);expect((ctx.data.get('room') as any).game.players[0].connected).toBe(false);});
  it('真实 Alarm 入口处理房主移交',async()=>{const {ctx,room}=make();await ctx.initialized;const a=await create(room),sa=await auth(room,ctx,a);const b=await create(room,'乙','join'),sb=await auth(room,ctx,b);sa.closed=true;await room.webSocketClose(sa as unknown as WebSocket);expect(ctx.alarm).toBe(160000);vi.mocked(Date.now).mockReturnValue(160000);await room.alarm();expect(sb.state.host).toBe(b.player);});
 });

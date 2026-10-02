@@ -42,6 +42,7 @@ python3 -m venv .venv
 .venv/bin/pip install playwright
 .venv/bin/playwright install chromium
 .venv/bin/python scripts/browser_test.py
+.venv/bin/python scripts/browser_table_test.py
 ```
 
 截图输出到忽略提交的 `artifacts/`。实际验收状态见 [VERIFICATION.md](VERIFICATION.md)。
