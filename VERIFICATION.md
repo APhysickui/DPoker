@@ -22,9 +22,15 @@
 
 ## 发布与网络
 
-- 已创建并提交代码到公开仓库 https://github.com/APhysickui/DPoker ，默认分支 main；已配置 GitHub Actions Pages 发布方式。
-- Cloudflare 网页已通过 GitHub 登录；本地 Wrangler 仍需独立 OAuth 授权，正在等待完成。未开通任何付费方案。
-- 后端与 GitHub Pages 尚未发布，等待 Worker 授权和后端地址配置。
-- 修复后的 GitHub CI 已成功完成：规则检查、生产构建、真实 Worker 集成测试全部通过。证据：https://github.com/APhysickui/DPoker/actions/runs/37038770297 ，对应代码提交 `a01c3ef8abec77c03963425e0eb3fff94a72fe1d`。
-- Pages 部署按配置跳过，原因是尚未部署 Worker、未设置 `VITE_API_URL`；网站当前不应作为可联机版本使用。
-- 尚未测试大陆直连、手机 Wi-Fi 或移动网络，不保证大陆稳定访问。
+- 正式网页：https://aphysickui.github.io/DPoker/
+- 实时后端：https://dpoker-api.dpoker.workers.dev
+- 已部署 Worker 版本：`5037af0c-054c-4118-9360-bdae927b12fa`。仅允许来源 `https://aphysickui.github.io`。SQLite Durable Object 已创建，未开通付费方案。
+- Pages 发布成功，规则测试、本地 Worker 集成和正式 Worker HTTPS/WSS 集成检查全部通过：https://github.com/APhysickui/DPoker/actions/runs/37086041380 。
+- 独立公网运行器真实浏览器验收通过：邀请直达、刷新恢复、完整对局和 9 个独立手机浏览器身份满桌：https://github.com/APhysickui/DPoker/actions/runs/37086393764 。
+- 用户切换网络后，本机通过既有代理访问前后端均返回 HTTP 200；正式网站的双浏览器完整对局、邀请、刷新、手机布局验证通过。公网响应需要比本地测试更长的等待时间，验收脚本已适配。
+- 本机禁用应用层代理的 Worker 直连尝试仍在 15 秒后超时。该测量不能保证完全绕开系统级网络路由，不能作为大陆所有运营商的结论。
+- 尚未拿两部实体手机分别进行 Wi-Fi/移动数据的连续多手测试，不宣称大陆直连稳定可用。保留本地可玩版本。
+
+## 部署维护
+
+前端自动发布已启用。正式后端当前通过已授权的本地 Wrangler 部署；独立 GitHub 后端工作流已就绪，但尚未配置长期 `CLOUDFLARE_API_TOKEN` 与 `CLOUDFLARE_ACCOUNT_ID` Secrets，所以暂不能从 GitHub 手动触发后端更新。OAuth 本地登录不会自动生成仓库部署凭证；没有把本地 OAuth 令牌复制到仓库。

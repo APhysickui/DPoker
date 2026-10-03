@@ -2,11 +2,12 @@
 import os
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+expect.set_options(timeout=20000)
 
 URL=os.getenv('WEB_URL','http://localhost:5173/DPoker/')
 OUT=Path('artifacts');OUT.mkdir(exist_ok=True)
 with sync_playwright() as p:
-    browser=p.chromium.launch(headless=True,executable_path=os.getenv('PLAYWRIGHT_CHROMIUM_EXECUTABLE'))
+    browser=p.chromium.launch(headless=True,executable_path=os.getenv('PLAYWRIGHT_CHROMIUM_EXECUTABLE'), proxy={'server':os.environ['PLAYWRIGHT_PROXY_SERVER']} if os.getenv('PLAYWRIGHT_PROXY_SERVER') else None)
     pages=[];errors=[]
     for i in range(9):
         context=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)

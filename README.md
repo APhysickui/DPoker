@@ -2,6 +2,10 @@
 
 移动端优先的中文私人德州扑克。2–9 人、无限注、免费虚拟筹码，无需注册；不包含支付、兑换、公开匹配、聊天、机器人或排行榜。
 
+网页：https://aphysickui.github.io/DPoker/  
+实时后端：https://dpoker-api.dpoker.workers.dev  
+网络验收与发布状态见 [VERIFICATION.md](VERIFICATION.md)。
+
 ## 本地启动
 
 需要 Node.js 22.12+（或更新的稳定版本）。
@@ -46,6 +50,8 @@ python3 -m venv .venv
 ```
 
 截图输出到忽略提交的 `artifacts/`。实际验收状态见 [VERIFICATION.md](VERIFICATION.md)。
+
+测试正式网站可设置 `WEB_URL=https://aphysickui.github.io/DPoker/`；若本机需要代理，另设置 `PLAYWRIGHT_PROXY_SERVER` 为已使用的代理地址。测试脚本支持 `PLAYWRIGHT_CHROMIUM_EXECUTABLE` 指定已有 Chromium。
 
 ## 免费部署：Cloudflare 后端
 

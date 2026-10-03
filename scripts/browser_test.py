@@ -3,14 +3,16 @@ Start Vite :5173 and Wrangler :8787 first. See README for dependencies.
 """
 import json
 import os
+import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+expect.set_options(timeout=20000)
 
 OUT = Path('artifacts')
 OUT.mkdir(exist_ok=True)
 URL = os.getenv('WEB_URL', 'http://localhost:5173/DPoker/')
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True, executable_path=os.getenv('PLAYWRIGHT_CHROMIUM_EXECUTABLE'))
+    browser = p.chromium.launch(headless=True, executable_path=os.getenv('PLAYWRIGHT_CHROMIUM_EXECUTABLE'), proxy={'server':os.environ['PLAYWRIGHT_PROXY_SERVER']} if os.getenv('PLAYWRIGHT_PROXY_SERVER') else None)
     desktop = browser.new_context(viewport={'width': 1440, 'height': 1000})
     mobile = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, device_scale_factor=2, has_touch=True)
     a, b = desktop.new_page(), mobile.new_page()
@@ -46,6 +48,13 @@ with sync_playwright() as p:
     expect(b.get_by_text('已连接', exact=True)).to_be_visible()
     expect(b.locator('.your-hand .card')).to_have_count(2)
     for _ in range(20):
+        if a.locator('.phase').inner_text() == '本手结算':
+            break
+        end = time.monotonic() + 20
+        while not (a.locator('.turn-heading').count() or b.locator('.turn-heading').count()):
+            if a.locator('.phase').inner_text() == '本手结算' or time.monotonic() > end:
+                break
+            a.wait_for_timeout(50)
         if a.locator('.phase').inner_text() == '本手结算':
             break
         acting = a if a.locator('.turn-heading').count() else b
