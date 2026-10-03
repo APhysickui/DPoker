@@ -28,6 +28,12 @@ jobs:
           trap 'kill $! 2>/dev/null || true' EXIT
           for i in $(seq 1 40); do curl -fsS http://localhost:8788/api/health && break || sleep 1; done
           npm run test:integration
+      - name: Deployed Worker checks
+        if: vars.VITE_API_URL != ''
+        env:
+          API_URL: ${{ vars.VITE_API_URL }}
+          WEB_ORIGIN: ${{ vars.PAGES_ORIGIN }}
+        run: npm run test:integration
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && vars.VITE_API_URL != ''
         with:
