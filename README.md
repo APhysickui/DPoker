@@ -2,8 +2,10 @@
 
 移动端优先的中文私人德州扑克。2–9 人、无限注、免费虚拟筹码，无需注册；不包含支付、兑换、公开匹配、聊天、机器人或排行榜。
 
-网页：https://aphysickui.github.io/DPoker/  
-实时后端：https://dpoker-api.dpoker.workers.dev  
+网页：https://aphysickui.github.io/DPoker/
+
+实时后端：https://dpoker-api.dpoker.workers.dev
+
 网络验收与发布状态见 [VERIFICATION.md](VERIFICATION.md)。
 
 ## 本地启动
