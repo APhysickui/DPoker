@@ -23,5 +23,16 @@ try{
  assert.equal(after.players.find(p=>p.id===b.player).connected,false);
  if(Date.now()<before.deadline){assert.equal(after.stage,before.stage);assert.equal(after.deadline,before.deadline);assert.equal(after.actor,before.actor);assert.deepEqual(after.players.map(p=>[p.id,p.chips,p.bet,p.total]),before.players.map(p=>[p.id,p.chips,p.bet,p.total]));}
  else {assert.equal(after.stage,'settled');assert.equal(after.players.reduce((n,p)=>n+p.chips,0),2000);}
- console.log('PASS: real Worker restart preserves room identity, own cards, hand number, chips, and deadline; lost sockets become offline');
+ const otherRestored=await connect(b);await until(()=>restored.state.version===otherRestored.state.version,6000);
+ await command(restored,'pause',{paused:true});await until(()=>restored.state.version===otherRestored.state.version,6000);
+ if(!['waiting','settled'].includes(restored.state.stage)) {
+   const actor=restored.state.actor===a.player?restored:otherRestored;await command(actor,'move',{move:'fold'});
+ }
+ restored.ws.send(JSON.stringify({type:'history'}));await until(()=>restored.messages.some(m=>m.type==='history'),6000);
+ const historyBefore=restored.messages.find(m=>m.type==='history').hands;
+ assert.equal(historyBefore.length,1);assert.equal(historyBefore[0].hand,before.hand);
+ await stop();for(const ws of sockets)ws.terminate();await boot();const final=await connect(a);
+ final.ws.send(JSON.stringify({type:'history'}));await until(()=>final.messages.some(m=>m.type==='history'),6000);
+ assert.deepEqual(final.messages.find(m=>m.type==='history').hands,historyBefore);
+ console.log('PASS: real Worker restart preserves identity, cards, chips, deadline, and separately stored private history');
 }finally{for(const ws of sockets)ws.terminate();await stop();await logfile.close();}

@@ -1,0 +1,286 @@
+{
+  "format": "dpoker.hand",
+  "schemaVersion": 1,
+  "room": "0123456789ab",
+  "hand": 1,
+  "startedAt": 0,
+  "small": 5,
+  "big": 10,
+  "dealer": 0,
+  "players": [
+    {
+      "id": "hero",
+      "name": "玩家甲",
+      "seat": 0,
+      "starting": 1000,
+      "ending": 990,
+      "cards": [
+        50,
+        48
+      ]
+    },
+    {
+      "id": "villain",
+      "name": "玩家乙",
+      "seat": 1,
+      "starting": 1000,
+      "ending": 1010,
+      "cards": [
+        51,
+        49
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "actor": "hero",
+      "name": "玩家甲",
+      "action": "call",
+      "amount": 5,
+      "at": 1,
+      "situation": {
+        "hero_cards": [
+          "Ks",
+          "Js"
+        ],
+        "board": [],
+        "pot_size": 15,
+        "to_call": 5,
+        "hero_stack": 995,
+        "villain_stack": 990,
+        "hero_bet": 5,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BTN",
+        "street": "PREFLOP",
+        "num_opponents": 1,
+        "hero_invested": 5,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "villain",
+      "name": "玩家乙",
+      "action": "check",
+      "amount": 0,
+      "at": 2,
+      "situation": {
+        "hero_cards": [],
+        "board": [],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 10,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BB",
+        "street": "PREFLOP",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "villain",
+      "name": "玩家乙",
+      "action": "check",
+      "amount": 0,
+      "at": 3,
+      "situation": {
+        "hero_cards": [],
+        "board": [
+          "9s",
+          "8s",
+          "7s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BB",
+        "street": "FLOP",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "hero",
+      "name": "玩家甲",
+      "action": "check",
+      "amount": 0,
+      "at": 4,
+      "situation": {
+        "hero_cards": [
+          "Ks",
+          "Js"
+        ],
+        "board": [
+          "9s",
+          "8s",
+          "7s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BTN",
+        "street": "FLOP",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "villain",
+      "name": "玩家乙",
+      "action": "check",
+      "amount": 0,
+      "at": 5,
+      "situation": {
+        "hero_cards": [],
+        "board": [
+          "9s",
+          "8s",
+          "7s",
+          "5s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BB",
+        "street": "TURN",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "hero",
+      "name": "玩家甲",
+      "action": "check",
+      "amount": 0,
+      "at": 6,
+      "situation": {
+        "hero_cards": [
+          "Ks",
+          "Js"
+        ],
+        "board": [
+          "9s",
+          "8s",
+          "7s",
+          "5s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BTN",
+        "street": "TURN",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "villain",
+      "name": "玩家乙",
+      "action": "check",
+      "amount": 0,
+      "at": 7,
+      "situation": {
+        "hero_cards": [],
+        "board": [
+          "9s",
+          "8s",
+          "7s",
+          "5s",
+          "3s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BB",
+        "street": "RIVER",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    },
+    {
+      "actor": "hero",
+      "name": "玩家甲",
+      "action": "check",
+      "amount": 0,
+      "at": 8,
+      "situation": {
+        "hero_cards": [
+          "Ks",
+          "Js"
+        ],
+        "board": [
+          "9s",
+          "8s",
+          "7s",
+          "5s",
+          "3s"
+        ],
+        "pot_size": 20,
+        "to_call": 0,
+        "hero_stack": 990,
+        "villain_stack": 990,
+        "hero_bet": 0,
+        "min_raise": 10,
+        "can_raise": true,
+        "position": "BTN",
+        "street": "RIVER",
+        "num_opponents": 1,
+        "hero_invested": 10,
+        "side_pot": false
+      }
+    }
+  ],
+  "board": [
+    46,
+    45,
+    44,
+    42,
+    40
+  ],
+  "payouts": [
+    {
+      "amount": 20,
+      "winners": [
+        "villain"
+      ],
+      "label": "同花",
+      "shares": [
+        {
+          "player": "villain",
+          "amount": 20
+        }
+      ]
+    }
+  ],
+  "endedAt": 8,
+  "viewer": "hero"
+}

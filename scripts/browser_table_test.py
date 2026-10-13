@@ -15,6 +15,7 @@ with sync_playwright() as p:
         page.on('pageerror',lambda e:errors.append(str(e)))
         page.goto(URL if i==0 else pages[0].url)
         page.wait_for_load_state('networkidle')
+        if i==0:page.get_by_role('button',name='暂停装饰动画').click()
         page.get_by_label('你的昵称').fill('朋友'+str(i+1))
         page.get_by_role('button',name='创建私人牌桌' if i==0 else '加入牌桌').click()
         expect(page.get_by_text('已连接',exact=True)).to_be_visible()
@@ -28,6 +29,9 @@ with sync_playwright() as p:
         expect(page.locator('.seat .avatar')).to_have_count(9)
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
         expect(page.locator('.your-hand .card')).to_have_count(2)
+    pages[0].wait_for_function("[...document.querySelectorAll('.your-hand .card')].every(c=>Number(getComputedStyle(c).opacity)>.95)")
+    for bet in pages[0].locator('.bet').all():
+        box=bet.bounding_box();assert box and box['x']>=0 and box['x']+box['width']<=390,'Bet amount clipped at edge'
     pages[0].screenshot(path=str(OUT/'nine-player-mobile.png'),full_page=True)
     assert not errors,errors
     print('PASS: 9 independent browser seats, readiness, deal, private hand rendering and mobile full-table layout')
